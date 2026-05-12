@@ -2,8 +2,15 @@
 {% block content %}
 
 <div class="form-container">
-    <h1>Delete Trainee</h1>
-    <p>Are you sure you want to delete <strong>{{ trainee.name }}</strong>?</p>
+    <h1>{% if soft %}Soft{% else %}Hard{% endif %} Delete Trainee</h1>
+    <p>Are you sure you want to
+        {% if soft %}
+            <strong>deactivate</strong>
+        {% else %}
+            <strong>permanently delete</strong>
+        {% endif %}
+        <strong>{{ trainee.name }}</strong>?
+    </p>
     <form method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-delete">Yes, Delete</button>

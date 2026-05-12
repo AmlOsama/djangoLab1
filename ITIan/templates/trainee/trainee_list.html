@@ -10,9 +10,11 @@
     <thead>
         <tr>
             <th>#</th>
+            <th>Image</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Course</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -20,17 +22,30 @@
         {% for trainee in trainees %}
         <tr>
             <td>{{ forloop.counter }}</td>
+            <td>
+                {% if trainee.image %}
+                    <img src="{{ trainee.image.url }}" width="50" height="50"
+                         style="border-radius:50%; object-fit:cover;">
+                {% else %}
+                    No image
+                {% endif %}
+            </td>
             <td>{{ trainee.name }}</td>
             <td>{{ trainee.email }}</td>
             <td>{{ trainee.phone }}</td>
+            <td>{{ trainee.course }}</td>
             <td>
                 <a href="{% url 'trainee_detail' trainee.pk %}" class="btn btn-primary">View</a>
                 <a href="{% url 'update_trainee' trainee.pk %}" class="btn btn-edit">Edit</a>
-                <a href="{% url 'delete_trainee' trainee.pk %}" class="btn btn-delete">Delete</a>
+                <form method="post" action="{% url 'soft_delete_trainee' trainee.pk %}" style="display:inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-delete">Soft Del</button>
+                </form>
+                <a href="{% url 'delete_trainee' trainee.pk %}" class="btn btn-delete">Hard Del</a>
             </td>
         </tr>
         {% empty %}
-        <tr><td colspan="5">No trainees yet.</td></tr>
+        <tr><td colspan="7">No trainees found.</td></tr>
         {% endfor %}
     </tbody>
 </table>
